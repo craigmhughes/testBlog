@@ -17,5 +17,7 @@ namespace TestBlog.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Post> Posts { get; set; }
     }
 }
