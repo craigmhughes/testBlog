@@ -26,5 +26,13 @@ namespace TestBlog.Controllers
             var posts = _db.Posts.OrderByDescending(x => x.Id).ToArray();
             return Ok(new { posts = posts });
         }
+
+        [HttpGet]
+        [Route("{name}")]
+        public IActionResult GetUsersPosts(string name)
+        {
+            var posts = _db.Posts.Where(x => x.Author == name).OrderByDescending(x => x.Id).ToArray();
+            return Ok(new { posts = posts });
+        }
     }
 }

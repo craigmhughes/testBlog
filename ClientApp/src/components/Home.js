@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import authService from './api-authorization/AuthorizeService';
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -8,24 +9,33 @@ export class Home extends Component {
 
         this.state = {
             posts: null,
-            loading: true
+            loading: true,
+            usersPosts: false,
+            isLoggedIn: false
         };
     }
 
     /**
      *  On load, populate posts to then render.
      * */
-    componentDidMount() {
+    async componentDidMount() {
         this.populatePosts();
+
+        // Get auth status & dependent on status, change auth state.
+        if (await authService.isAuthenticated()) {
+            this.setState({
+                isLoggedIn: true
+            });
+        }
     }
 
     /**
      *  GET Requests to populate posts state. Sets loading state to false on
      *  completion.
      * */
-    async populatePosts() {
+    async populatePosts(userName) {
 
-        const response = await fetch("Posts", {
+        const response = await fetch(!userName ? "Posts" : `Posts/${userName}`, {
             method: 'GET'
         }).then(res => res.json());
 
@@ -59,15 +69,36 @@ export class Home extends Component {
         );
     }
 
+    switchPostsView() {
+
+        // Reset Posts
+        this.setState({
+            posts: null,
+            loading: true,
+            usersPosts: !this.state.usersPosts
+        });
+
+        // Repopulate posts
+        this.populatePosts(!this.state.usersPosts ? authService.getUser.name : null);
+
+    }
+
 
     render() {
 
+        // Decide content on loading state
         let content = this.state.loading ? <p>Loading...</p> :
             this.renderPostsElements(this.state.posts);
 
+        // Button will not exist for non authed users
+        let viewSwitch = this.state.isLoggedIn ?
+            <button onClick={() => { this.switchPostsView(); }}>{`${this.state.usersPosts ? "All Posts" : "My Posts"}`}</button>
+            : null;
+
         return (
             <main>
-                <h1>Hello, world!</h1>
+                <h1>Blog Posts</h1>
+                {viewSwitch}
                 {content}
             </main>
         );
