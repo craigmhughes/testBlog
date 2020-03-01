@@ -10,7 +10,7 @@ using TestBlog.Data;
 namespace TestBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200301003940_InitialCreate")]
+    [Migration("20200301222759_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
