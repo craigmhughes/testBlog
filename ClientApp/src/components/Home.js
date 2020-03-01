@@ -35,6 +35,8 @@ export class Home extends Component {
      * */
     async populatePosts(userName) {
 
+        console.log(userName);
+
         const response = await fetch(!userName ? "Posts" : `Posts/User/${userName}`, {
             method: 'GET'
         }).then(res => res.json());
@@ -79,7 +81,7 @@ export class Home extends Component {
         );
     }
 
-    switchPostsView() {
+    async switchPostsView() {
 
         // Reset Posts
         this.setState({
@@ -88,8 +90,10 @@ export class Home extends Component {
             usersPosts: !this.state.usersPosts
         });
 
+        let user = await authService.getUser();
+
         // Repopulate posts
-        this.populatePosts(!this.state.usersPosts ? authService.getUser.name : null);
+        this.populatePosts(this.state.usersPosts ? user.name : null);
 
     }
 

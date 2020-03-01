@@ -28,13 +28,13 @@ namespace TestBlog.Controllers
             return Ok(new { posts = posts });
         }
 
-        //[HttpGet]
-        //[Route("User/{name}")]
-        //public IActionResult GetUsersPosts(string name)
-        //{
-        //    var posts = _db.Posts.Where(x => x.Author == name).OrderByDescending(x => x.Id).ToArray();
-        //    return Ok(new { posts = posts });
-        //}
+        [HttpGet]
+        [Route("User/{name}")]
+        public IActionResult GetUsersPosts(string name)
+        {
+            var posts = _db.Posts.Where(x => x.Author == name).OrderByDescending(x => x.Id).ToArray();
+            return Ok(new { posts = posts });
+        }
 
         [HttpPost]
         public IActionResult Post([FromBody] Post postReq)
