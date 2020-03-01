@@ -105,14 +105,14 @@ export class Home extends Component {
                             <button type="button" onClick={() => { this.props.setActivePost(post) }} className="btn btn-outline-secondary">Edit</button>
                             <button type="button" onClick={() => { this.deletePost(post) }} className="btn btn-outline-secondary">Delete</button>
                         </div>
-
+                        
                     return (
                         <article className="card mb-2" key={post.id}>
                             <section className="card-body row">
                                 <section className="col-sm">
-                                    <h2 className="card-title" onClick={() => { this.props.setViewpost(post) }}>{post.title}</h2>
-                                    <p className="card-text">{`Posted at: ${date} by ${post.author}`}</p>
-                                    <p className="card-text">{post.description}</p>
+                                    <h2 className="card-title h3 font-weight-normal" onClick={() => { this.props.setViewpost(post) }}>{post.title}</h2>
+                                    <p className="card-text alert-light">{`Posted at: ${date} by `}<span className="badge badge-primary">{`${post.author}`}</span></p>
+                                    <p className="card-text text-muted">{post.description}</p>
                                 </section>
                         
                                 <section className="col-sm">
@@ -163,7 +163,7 @@ export class Home extends Component {
         return (
             <main>
                 <section className="row mb-4 pt-3">
-                    <h1 className="col">Blog Posts</h1>
+                    <h1 className="col display-3">Blog Posts</h1>
                     <div className="col">
                         {viewSwitch}
                     </div>

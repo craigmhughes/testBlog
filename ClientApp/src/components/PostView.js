@@ -25,13 +25,13 @@ export default class PostView extends Component {
             <main>
                 <section className="mt-3">
                     <h1 className="display-3">{this.props.viewpost.title}</h1>
-                    <p className="alert alert-light pl-0">{`Posted at: ${date} by `}<span class="badge badge-dark">{`${this.props.viewpost.author}`}</span></p>
+                    <p className="alert alert-light pl-0">{`Posted at: ${date} by `}<span className="badge badge-primary">{`${this.props.viewpost.author}`}</span></p>
                     <p className="h3">{this.props.viewpost.description}</p>
-                    <hr class="my-4"/>
+                    <hr className="my-4"/>
                 </section>
                 <section>
                     <p>{this.props.viewpost.body}</p>
-                    <hr class="my-4 mt-3"/>
+                    <hr className="my-4 mt-3"/>
                     <p className="alert alert-light text-center pt-3">End of Post</p>
                 </section>
             </main>
