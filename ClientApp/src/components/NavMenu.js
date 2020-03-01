@@ -35,7 +35,12 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/Posts/New">Create Post</NavLink>
+                                <NavLink tag={Link} className="text-dark" to="/Posts/New" onClick={(e) => {
+                                    if (this.props.activePost) {
+                                        e.preventDefault();
+                                        this.props.setActivePost(null);
+                                    }
+                                }}>Create Post</NavLink>
                 </NavItem>
                 <LoginMenu>
                 </LoginMenu>

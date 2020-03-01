@@ -20,6 +20,11 @@ export class Home extends Component {
      *  On load, populate posts to then render.
      * */
     async componentDidMount() {
+
+        if (this.props.activePost && !this.props.editing) {
+            this.props.setActivePost(null);
+        }
+
         // Get auth status & dependent on status, change auth state.
         if (await authService.isAuthenticated()) {
             this.setState({
@@ -29,7 +34,7 @@ export class Home extends Component {
 
         let user = await authService.getUser();
 
-        this.populatePosts(false, user.name);
+        this.populatePosts(false, this.state.isLoggedIn ? user.name : null);
     }
 
     /**
@@ -96,7 +101,7 @@ export class Home extends Component {
 
                     let ownerMenu = user !== post.author ? null :
                         <div className="btn-group float-right" role="group" aria-label="Edit post menu">
-                            <button type="button" className="btn btn-outline-secondary">Edit</button>
+                            <button type="button" onClick={() => { this.props.setActivePost(post) }} className="btn btn-outline-secondary">Edit</button>
                             <button type="button" onClick={() => { this.deletePost(post) }} className="btn btn-outline-secondary">Delete</button>
                         </div>
 
@@ -140,6 +145,10 @@ export class Home extends Component {
 
 
     render() {
+
+        if (this.props.activePost && this.props.editing) {
+            this.props.history.push('/Posts/New');
+        }
 
         // Decide content on loading state
         let content = this.state.loading ? <p>Loading...</p> :

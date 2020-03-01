@@ -57,5 +57,19 @@ namespace TestBlog.Controllers
 
             return Ok(new { success = "Deleted Post" });
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Put([FromBody] Post postReq)
+        {
+            Post post = _db.Posts.Find(postReq.Id);
+            post.Title = postReq.Title;
+            post.PostedAt = DateTime.Now;
+            post.Description = postReq.Description;
+            post.Body = postReq.Body;
+
+            _db.SaveChanges();
+
+            return Ok(new { post = post });
+        }
     }
 }
