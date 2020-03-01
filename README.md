@@ -6,6 +6,19 @@ Small CRUD app/blog allowing users to create, edit, delete and read individual p
 
 Uses EF Core (SQL Server w/ Docker) **Developed on Mac. Had to be run through Docker container.**
 
+```html
+<!-- ______________________________________________________________
+     |                                                            |
+     |              Like the project? Here's my card!             |
+     |                                                            |
+     |                 E-Mail: hghscraig@gmail.com                |
+     |    Linkedin: https://www.linkedin.com/in/craig-m-hughes/   |
+     |                                                            |
+     |                    Thanks for visiting                     |
+     . ___________________________________________________________.
+    -->
+```
+
 # Screenshots
 Home View (Not Logged in)
 ![Unauthed-Home](https://github.com/craigmhughes/testBlog/blob/master/Project-Screenshots/unauthed-home.png?raw=true)
