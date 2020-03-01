@@ -93,6 +93,7 @@ export class Home extends Component {
             <section>
                 {posts.map(post => {
 
+                    // Reformat date
                     let date = post.postedAt.split("T");
                     date = date[0].split("-");
                     date = `${date[2]}/${date[1]}/${date[0]}`;
@@ -109,7 +110,7 @@ export class Home extends Component {
                         <article className="card mb-2" key={post.id}>
                             <section className="card-body row">
                                 <section className="col-sm">
-                                    <h2 className="card-title">{post.title}</h2>
+                                    <h2 className="card-title" onClick={() => { this.props.setViewpost(post) }}>{post.title}</h2>
                                     <p className="card-text">{`Posted at: ${date} by ${post.author}`}</p>
                                     <p className="card-text">{post.description}</p>
                                 </section>

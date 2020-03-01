@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Route, withRouter } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -8,8 +8,9 @@ import { ApplicationPaths } from './components/api-authorization/ApiAuthorizatio
 
 import './custom.css'
 import PostCreate from './components/PostCreate';
+import PostView from './components/PostView';
 
-export default class App extends Component {
+class App extends Component {
     static displayName = App.name;
 
     constructor(props) {
@@ -17,12 +18,14 @@ export default class App extends Component {
         this.state = {
             activePost: null,
             editing: false,
-            clearField: false
+            clearField: false,
+            viewpost: null
         };
 
         this.setActivePost = this.setActivePost.bind(this);
         this.setEditing = this.setEditing.bind(this);
         this.setClear = this.setClear.bind(this);
+        this.setViewpost = this.setViewpost.bind(this);
     }
 
     setActivePost(post) {
@@ -31,6 +34,14 @@ export default class App extends Component {
             editing: post !== null,
             clearField: post === null
         });
+    }
+
+    setViewpost(post) {
+        this.setState({
+            viewpost: post,
+        });
+
+        this.props.history.push('/Post/View');
     }
 
     setEditing(edit) {
@@ -51,14 +62,20 @@ export default class App extends Component {
             // Layout passes props to Nav to allow "Create Post" link to disable editing state.
             <Layout activePost={this.state.activePost} setActivePost={this.setActivePost}>
                 <Route exact path='/' render={(props) => <Home setActivePost={this.setActivePost}
-                    activePost={this.state.activePost} history={props.history} editing={this.state.editing}/>} />
+                    activePost={this.state.activePost} history={props.history} editing={this.state.editing}
+                    setViewpost={this.setViewpost}/>} />
+
                 <Route exact path='/Posts/New' render={(props) => <PostCreate activePost={this.state.activePost}
                     setEditing={this.setEditing} history={props.history} clear={this.state.clearField}
                     setClear={this.setClear}
-                    setActivePost={this.setActivePost}/>} />
+                    setActivePost={this.setActivePost} />} />
+
+                <Route exact path='/Post/View' render={(props) => <PostView viewpost={this.state.viewpost} history={props.history} />} />
 
               <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
           </Layout>
         );
   }
 }
+
+export default withRouter(App);

@@ -36,6 +36,14 @@ namespace TestBlog.Controllers
             return Ok(new { posts = posts });
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetPost(int id)
+        {
+            var post = _db.Posts.Find(id);
+            return Ok(new { post = post });
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] Post postReq)
         {
