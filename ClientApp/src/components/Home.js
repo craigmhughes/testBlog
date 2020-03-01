@@ -11,7 +11,8 @@ export class Home extends Component {
             posts: null,
             loading: true,
             usersPosts: false,
-            isLoggedIn: false
+            isLoggedIn: false,
+            name: null
         };
     }
 
@@ -19,38 +20,40 @@ export class Home extends Component {
      *  On load, populate posts to then render.
      * */
     async componentDidMount() {
-        this.populatePosts();
-
         // Get auth status & dependent on status, change auth state.
         if (await authService.isAuthenticated()) {
             this.setState({
-                isLoggedIn: true
+                isLoggedIn: true,
             });
         }
+
+        let user = await authService.getUser();
+
+        this.populatePosts(false, user.name);
     }
 
     /**
      *  GET Requests to populate posts state. Sets loading state to false on
      *  completion.
      * */
-    async populatePosts(userName) {
+    async populatePosts(getUser, userName) {
 
-        console.log(userName);
+        console.log(getUser);
 
-        const response = await fetch(!userName ? "Posts" : `Posts/User/${userName}`, {
+        const response = await fetch(!getUser ? "Posts" : `Posts/User/${userName}`, {
             method: 'GET'
         }).then(res => res.json());
 
         const data = await response.posts;
         console.log(data);
-        this.setState({ posts: data, loading: false });
+        this.setState({ posts: data, loading: false, name: userName });
     }
 
     /**
      * Render elements to fill body content.
      * @param {Array} posts
      */
-    renderPostsElements(posts) {
+    renderPostsElements(posts, user) {
 
         // Let user know there are no posts.
         if (posts.length < 1) {
@@ -65,14 +68,26 @@ export class Home extends Component {
                     date = date[0].split("-");
                     date = `${date[2]}/${date[1]}/${date[0]}`;
 
-                    console.log(date);
+                    console.log(this.state.userName);
+
+                    let ownerMenu = user !== post.author ? null :
+                        <div className="btn-group float-right" role="group" aria-label="Edit post menu">
+                            <button type="button" className="btn btn-outline-secondary">Edit</button>
+                            <button type="button" className="btn btn-outline-secondary">Delete</button>
+                        </div>
 
                     return (
-                        <article className="card" key={post.id}>
-                            <section className="card-body">
-                                <h2 className="card-title">{post.title}</h2>
-                                <p className="card-text">{`Posted at: ${date} by ${post.author}`}</p>
-                                <p className="card-text">{post.description}</p>
+                        <article className="card mb-2" key={post.id}>
+                            <section className="card-body row">
+                                <section className="col-sm">
+                                    <h2 className="card-title">{post.title}</h2>
+                                    <p className="card-text">{`Posted at: ${date} by ${post.author}`}</p>
+                                    <p className="card-text">{post.description}</p>
+                                </section>
+                        
+                                <section className="col-sm">
+                                    {ownerMenu}
+                                </section>
                             </section>
                         </article>
                     );
@@ -93,7 +108,7 @@ export class Home extends Component {
         let user = await authService.getUser();
 
         // Repopulate posts
-        this.populatePosts(this.state.usersPosts ? user.name : null);
+        this.populatePosts(this.state.usersPosts, user.name);
 
     }
 
@@ -102,17 +117,22 @@ export class Home extends Component {
 
         // Decide content on loading state
         let content = this.state.loading ? <p>Loading...</p> :
-            this.renderPostsElements(this.state.posts);
+            this.renderPostsElements(this.state.posts, this.state.name);
 
         // Button will not exist for non authed users
         let viewSwitch = this.state.isLoggedIn ?
-            <button onClick={() => { this.switchPostsView(); }}>{`${this.state.usersPosts ? "All Posts" : "My Posts"}`}</button>
+            <button className="btn btn-primary float-right" onClick={() => { this.switchPostsView(); }}>{`${this.state.usersPosts ? "All Posts" : "My Posts"}`}</button>
             : null;
 
         return (
             <main>
-                <h1>Blog Posts</h1>
-                {viewSwitch}
+                <section className="row mb-4 pt-3">
+                    <h1 className="col">Blog Posts</h1>
+                    <div className="col">
+                        {viewSwitch}
+                    </div>
+                </section>
+                
                 {content}
             </main>
         );
