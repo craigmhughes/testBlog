@@ -35,7 +35,7 @@ export class Home extends Component {
      * */
     async populatePosts(userName) {
 
-        const response = await fetch(!userName ? "Posts" : `Posts/${userName}`, {
+        const response = await fetch(!userName ? "Posts" : `Posts/User/${userName}`, {
             method: 'GET'
         }).then(res => res.json());
 
@@ -58,12 +58,22 @@ export class Home extends Component {
         return (
             <section>
                 {posts.map(post => {
-                    return <article key={post.Id}>
-                        <p>{post.Title}</p>
-                        <p>`Posted at: ${post.PostedAt} by ${post.Author}`</p>
-                        <p>{post.Description}</p>
-                        <p>{post.Body}</p>
-                    </article>
+
+                    let date = post.postedAt.split("T");
+                    date = date[0].split("-");
+                    date = `${date[2]}/${date[1]}/${date[0]}`;
+
+                    console.log(date);
+
+                    return (
+                        <article className="card" key={post.id}>
+                            <section className="card-body">
+                                <h2 className="card-title">{post.title}</h2>
+                                <p className="card-text">{`Posted at: ${date} by ${post.author}`}</p>
+                                <p className="card-text">{post.description}</p>
+                            </section>
+                        </article>
+                    );
                 })}
             </section>
         );

@@ -7,6 +7,7 @@ import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizat
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 
 import './custom.css'
+import PostCreate from './components/PostCreate';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -14,8 +15,10 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+            <Route exact path='/' component={Home} />
+            <Route exact path='/Posts/New' component={PostCreate} />
+
+          <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>
     );
   }
