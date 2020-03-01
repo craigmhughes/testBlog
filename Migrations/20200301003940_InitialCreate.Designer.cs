@@ -10,7 +10,7 @@ using TestBlog.Data;
 namespace TestBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200228194013_InitialCreate")]
+    [Migration("20200301003940_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -317,6 +317,10 @@ namespace TestBlog.Migrations
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("ntext");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PostedAt")
                         .HasColumnType("datetime2");

@@ -316,6 +316,10 @@ namespace TestBlog.Migrations
                         .IsRequired()
                         .HasColumnType("ntext");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PostedAt")
                         .HasColumnType("datetime2");
 

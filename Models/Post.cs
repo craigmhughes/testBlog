@@ -21,8 +21,8 @@ namespace TestBlog.Models
         [Required]
         public DateTime PostedAt { get; set; }
 
-        //[Required]
-        //public string Description { get; set; }
+        [Required]
+        public string Description { get; set; }
 
         [Required]
         [Column(TypeName = "ntext")]
