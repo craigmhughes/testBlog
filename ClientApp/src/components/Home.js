@@ -33,9 +33,12 @@ export class Home extends Component {
     }
 
     /**
-     *  GET Requests to populate posts state. Sets loading state to false on
-     *  completion.
-     * */
+     * GET Requests to populate posts state. Sets loading state to false on
+     * completion.
+     * 
+     * @param {any} getUser
+     * @param {any} userName
+     */
     async populatePosts(getUser, userName) {
 
         console.log(getUser);
@@ -47,6 +50,27 @@ export class Home extends Component {
         const data = await response.posts;
         console.log(data);
         this.setState({ posts: data, loading: false, name: userName });
+    }
+
+    /**
+     * DELETE Post based on passed id
+     * 
+     * @param {any} post
+     */
+    async deletePost(post) {
+        const token = await authService.getAccessToken();
+
+        const response = await fetch(`Posts/${post.id}`, {
+            method: 'DELETE',
+            headers: !token ? {} : {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(post),
+        }).then(res => res.json());
+
+        console.log(response);
+        this.populatePosts(false, this.state.name);
     }
 
     /**
@@ -73,7 +97,7 @@ export class Home extends Component {
                     let ownerMenu = user !== post.author ? null :
                         <div className="btn-group float-right" role="group" aria-label="Edit post menu">
                             <button type="button" className="btn btn-outline-secondary">Edit</button>
-                            <button type="button" className="btn btn-outline-secondary">Delete</button>
+                            <button type="button" onClick={() => { this.deletePost(post) }} className="btn btn-outline-secondary">Delete</button>
                         </div>
 
                     return (
@@ -95,6 +119,8 @@ export class Home extends Component {
             </section>
         );
     }
+
+
 
     async switchPostsView() {
 

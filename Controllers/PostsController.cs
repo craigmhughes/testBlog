@@ -48,5 +48,14 @@ namespace TestBlog.Controllers
 
             return Ok(new { post = post });
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromBody] Post postReq)
+        {
+            _db.Posts.Remove(postReq);
+            _db.SaveChanges();
+
+            return Ok(new { success = "Deleted Post" });
+        }
     }
 }
