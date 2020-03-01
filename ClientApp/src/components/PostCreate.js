@@ -8,53 +8,65 @@ export default class PostCreate extends Component {
     constructor(props) {
         super(props);
 
+        
         if (this.props.activePost) {
             this.state = {
+                // Controlled input vals.
                 postTitle: this.props.activePost.title,
                 postAuthor: this.props.activePost.author,
                 postDesc: this.props.activePost.description,
                 postBody: this.props.activePost.body
             }
         } else {
+            // Init empty state.
             this.state = {
-                postTitle: "",
-                postAuthor: "",
-                postDesc: "",
-                postBody: ""
             }
         }
 
-        this.title = React.createRef();
-        this.description = React.createRef();
-        this.postBody = React.createRef();
     }
 
+    /**
+     * Set post attribute state for Controlled Input (Title)
+     * @param {any} e = Event
+     */
     setTitle(e) {
         this.setState({ postTitle: e.target.value });
     }
 
-    setAuthor(e) {
-        this.setState({ postAuthor: e.target.value });
-    }
-
+    /**
+     * Set post attribute state for Controlled Input (Description)
+     * @param {any} e = Event
+     */
     setDesc(e) {
         this.setState({ postDesc: e.target.value });
     }
 
+    /**
+     * Set post attribute state for Controlled Input (Body)
+     * @param {any} e = Event
+     */
     setPostBody(e) {
         this.setState({ postBody: e.target.value });
     }
 
+    /**
+     *  On component mount, reset editing state on App to reenable "Create Post"
+     *  view.
+     * */
     componentDidMount() {
         if (this.props.activePost) {
             this.props.setEditing(false);
         }
     }
 
+    /**
+     *  Create and send response based on activePost prop.
+     * */
     async createPost() {
         const token = await authService.getAccessToken();
         const user = await authService.getUser();
 
+        // Create Post object.
         let Post = {
             Title: this.state.postTitle,
             Author: user.name,
@@ -62,6 +74,7 @@ export default class PostCreate extends Component {
             Body: this.state.postBody
         };
 
+        // Add Id to object if activePost exists.
         if (this.props.activePost) {
             Post["Id"] = this.props.activePost.id;
         }
@@ -76,9 +89,16 @@ export default class PostCreate extends Component {
         }).then(res => res.json());
 
         const data = await response;
-        console.log(data);
+
+        // Redirect on response.
+        if (data.post) {
+            this.props.history.push('/');
+        }
     }
 
+    /**
+     *  Clears input values based on clear prop.
+     * */
     componentDidUpdate() {
         if (this.props.clear) {
             this.setState({
