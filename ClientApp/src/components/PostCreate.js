@@ -53,7 +53,13 @@ export default class PostCreate extends Component {
      *  On component mount, reset editing state on App to reenable "Create Post"
      *  view.
      * */
-    componentDidMount() {
+    async componentDidMount() {
+
+        // Redirect if not logged in.
+        if (await authService.isAuthenticated() === false) {
+            this.props.history.push("/");
+        }
+
         if (this.props.activePost) {
             this.props.setEditing(false);
         }

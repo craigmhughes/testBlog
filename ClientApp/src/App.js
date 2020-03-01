@@ -65,7 +65,7 @@ class App extends Component {
                     activePost={this.state.activePost} history={props.history} editing={this.state.editing}
                     setViewpost={this.setViewpost}/>} />
 
-                <Route exact path='/Posts/New' render={(props) => <PostCreate activePost={this.state.activePost}
+                <Route exact path='/Post/New' render={(props) => <PostCreate activePost={this.state.activePost}
                     setEditing={this.setEditing} history={props.history} clear={this.state.clearField}
                     setClear={this.setClear}
                     setActivePost={this.setActivePost} />} />

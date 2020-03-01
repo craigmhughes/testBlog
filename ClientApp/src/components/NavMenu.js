@@ -3,6 +3,7 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
+import authService from './api-authorization/AuthorizeService';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -14,7 +15,15 @@ export class NavMenu extends Component {
     this.state = {
       collapsed: true
     };
-  }
+    }
+
+    async componentDidMount() {
+        if (await authService.isAuthenticated()) {
+            this.setState({
+                loggedIn: true
+            });
+        }
+    }
 
   toggleNavbar () {
     this.setState({
@@ -34,16 +43,19 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
-                <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/Posts/New" onClick={(e) => {
-                                    if (this.props.activePost) {
-                                        e.preventDefault();
-                                        this.props.setActivePost(null);
-                                    }
-                                }}>Create Post</NavLink>
-                </NavItem>
                 <LoginMenu>
                 </LoginMenu>
+
+                {this.state.loggedIn ?
+                    <NavItem className="pl-3">
+                        <NavLink tag={Link} className="btn btn-primary text-light" to="/Post/New" onClick={(e) => {
+                            if (this.props.activePost) {
+                                e.preventDefault();
+                                this.props.setActivePost(null);
+                            }
+                        }}>Create Post</NavLink>
+                    </NavItem>
+                : null}
               </ul>
             </Collapse>
           </Container>

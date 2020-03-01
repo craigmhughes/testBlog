@@ -148,7 +148,7 @@ export class Home extends Component {
     render() {
 
         if (this.props.activePost && this.props.editing) {
-            this.props.history.push('/Posts/New');
+            this.props.history.push('/Post/New');
         }
 
         // Decide content on loading state
