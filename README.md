@@ -1,5 +1,5 @@
 # TestBlog
-.NET test blog - Small Project example (EKM)
+.NET test blog - Small Project example
 -
 
 Small CRUD app/blog allowing users to create, edit, delete and read individual posts.
